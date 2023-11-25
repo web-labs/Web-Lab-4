@@ -1,0 +1,39 @@
+.content-container {
+  @media (min-width: 1211px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (min-width: 746px) and (max-width: 1210px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (max-width: 745px){
+
+  }
+
+}
+
+.canvas-style {
+
+  @media (min-width: 1211px) {
+    margin-right: 200px;
+  }
+
+  @media (min-width: 746px) and (max-width: 1210px) {
+    margin-right: 200px;
+  }
+
+
+
+  @media (max-width: 745px) {
+    margin: 15px auto;
+    display: block;
+    align-items: center;
+  }
+
+
+}

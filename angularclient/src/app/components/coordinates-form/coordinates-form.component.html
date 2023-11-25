@@ -1,0 +1,41 @@
+<div class="py-4 px-6 mt-10 border-2 shadow-2xl rounded flex-col m-auto flex items-center" [ngStyle]="{width: '100%', maxWidth: '300px'}">
+  <form [formGroup]="coordinatesForm" (ngSubmit)="onSubmit()">
+    <div class="flex m-auto flex-col">
+      <label for="xValue" class="font-bold">Coordinate X</label>
+      <input id="xValue" type="text" class="border-2 border-green-600 rounded w-full py-2 px-4 mb-2"
+             placeholder="Values in [-5; 3]"
+             formControlName="x" maxlength="6"
+             [class.is-invalid]="x.invalid && (x.dirty || x.touched)">
+      <p class="text-red-700 font-medium" *ngIf="(x.errors?.required || x.errors?.min || x.errors?.max || x.errors?.notANumber)">Invalid X value</p>
+    </div>
+
+
+    <div class="flex m-auto flex-col">
+    <label for="yValue" class="font-bold">Coordinate Y</label>
+    <input id="yValue" type="text" class="border-2 border-green-600 rounded w-full py-2 px-4 mb-2"
+           placeholder="Values in [-5; 3]"
+           formControlName="y" maxlength="6"
+           [class.is-invalid]="y.invalid && (y.dirty || y.touched)">
+    <p class="text-red-700 font-medium" *ngIf="(y.errors?.required || y.errors?.min || y.errors?.max || y.errors?.notANumber)">Invalid Y value</p>
+    </div>
+
+
+    <div class="flex m-auto flex-col">
+    <label for="rValue" class="font-bold">Range R [0; 3]</label>
+    <input id="rValue" type="text"
+           class="border-2 border-green-600 rounded w-full py-2 px-4 mb-2"
+           placeholder="Values in [0; 3]"
+           (blur)="onBlur()"
+           formControlName="r" maxlength="6"
+           [class.is-invalid]="r.invalid && (r.dirty || r.touched)">
+
+    <p class="text-red-700 font-medium" *ngIf="(r.errors?.required || r.errors?.min || r.errors?.max || r.errors?.notANumber)">Invalid R value</p>
+    </div>
+
+
+    <button type="submit" class="py-2 px-4 bg-green-700 text-white font-medium rounded content-center flex flex-row m-auto" >Submit</button>
+
+    <button type="button" class="py-2 px-4 mt-3 bg-red-700 text-white font-medium rounded content-center flex flex-row m-auto" (click)="explodeAtomic()">Clear Table</button>
+  </form>
+
+</div>

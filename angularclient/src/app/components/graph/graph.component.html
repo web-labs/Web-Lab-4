@@ -1,0 +1,20 @@
+<div class="content-container">
+  <canvas #canvas class="canvas-style"
+          (click)="onCanvasClick($event)">Unsupported</canvas>
+  <app-coordinates-form (rChanged)="updateRValue($event)"></app-coordinates-form>
+</div>
+
+
+<table #resultsTable class="resultsTable">
+  <thead>
+  <tr>
+    <th>X</th>
+    <th>Y</th>
+    <th>R</th>
+    <th>Result</th>
+  </tr>
+  </thead>
+
+</table>
+
+
