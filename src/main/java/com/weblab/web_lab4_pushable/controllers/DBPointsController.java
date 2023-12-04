@@ -48,14 +48,17 @@ public class DBPointsController {
 
     private double parseDouble(Object rValueObj) {
         if (rValueObj instanceof Number) {
-            return ((Number) rValueObj).doubleValue();
+            if (((Number) rValueObj).doubleValue() > 0) {
+                return ((Number) rValueObj).doubleValue();
+            } else{
+                throw new NumberFormatException("Invalid R value format");
+            }
         } else if (rValueObj instanceof String) {
             return Double.parseDouble((String) rValueObj);
         } else {
             throw new NumberFormatException("Invalid R value format");
         }
     }
-
 
 
     @DeleteMapping

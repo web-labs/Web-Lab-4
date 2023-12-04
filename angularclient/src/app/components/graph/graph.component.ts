@@ -48,15 +48,7 @@ export class GraphComponent implements AfterViewInit, OnDestroy  {
     this.addToTable(point)
   }
 
-  private initCanvasAndRestorePoints() {
-    const canvas = this.canvasRef.nativeElement;
-    const context = canvas.getContext('2d');
-    if (!context) {
-      throw new Error('Failed to get 2D context');
-    }
-    this.ctx = context;
-    this.drawCoordsPlane(this.currentRValue);
-
+  makeDBRequest(){
     if (this.username) {
       this.coordinatesService.updateRValue(this.currentRValue, this.username).subscribe(() => {
         this.coordinatesService.getAllPoints(this.username).subscribe(
@@ -73,26 +65,26 @@ export class GraphComponent implements AfterViewInit, OnDestroy  {
     }
   }
 
-  //TODO: много повторения кода, убрать вложенность и повыносить все в функции
+  private initCanvasAndRestorePoints() {
+    const canvas = this.canvasRef.nativeElement;
+    const context = canvas.getContext('2d');
+    if (!context) {
+      throw new Error('Failed to get 2D context');
+    }
+    this.ctx = context;
+    this.drawCoordsPlane(this.currentRValue);
+
+    this.makeDBRequest();
+  }
+
+
   updateRValue(r: number): void {
     this.currentRValue = r;
     this.drawCoordsPlane(this.currentRValue);
     this.clearTable()
 
-    if (this.username) {
-      this.coordinatesService.updateRValue(this.currentRValue, this.username).subscribe(() => {
-        this.coordinatesService.getAllPoints(this.username).subscribe(
-          (points: Point[]) => {
-            points.forEach(point => {
-              this.restorePoint(point);
-            });
-          },
-          error => {
-            console.log("Error with DB", error);
-          }
-        );
-      });
-    }
+    this.makeDBRequest();
+
   }
 
   clearCanvas(){
@@ -116,7 +108,7 @@ export class GraphComponent implements AfterViewInit, OnDestroy  {
   }
 
   putDots(): void {
-    this.ctx.fillStyle = "black"
+    this.ctx.fillStyle = "#fff"
     const radius = 4;
     this.drawDot(262.5, 175, radius, 0, Math.PI * 2);
     this.drawDot(345, 175, radius, 0, Math.PI * 2);
@@ -137,7 +129,7 @@ export class GraphComponent implements AfterViewInit, OnDestroy  {
     this.ctx.beginPath();
     const canvasCoords = this.toCanvasCoords(x, y, r, 350)
     this.ctx.arc(canvasCoords.x, canvasCoords.y, pointSize/2, 0, Math.PI * 2);
-    this.ctx.fillStyle = result ? '#1E5945' : 'red';
+    this.ctx.fillStyle = result ? '#7CFC00' : 'red';
     this.ctx.fill();
   }
 
@@ -152,7 +144,11 @@ export class GraphComponent implements AfterViewInit, OnDestroy  {
     const arrowSize = 10;
 
 
-    this.ctx.fillStyle = '#4169E1';
+    const neonBlue = "#0000CD";
+    const neonPink = "#FF00FF";
+    const neonGreen = "#7CFC00";
+
+    this.ctx.fillStyle = neonBlue;
     //1st quarter - empty
 
     //2nd quarter - 1/4 circle
@@ -175,9 +171,12 @@ export class GraphComponent implements AfterViewInit, OnDestroy  {
 
     this.ctx.beginPath();
     this.putDots();
-    this.ctx.font = "15px Arial";
-    this.ctx.fillText('y', 150, 15);
-    this.ctx.fillText('x', 340, 195);
+    this.ctx.font = "20px Roboto";
+    this.ctx.fillStyle = neonGreen; // Цвет текста
+    this.ctx.shadowColor = neonGreen; // Цвет тени (свечения) текста
+    this.ctx.shadowBlur = 10; // Размер свечения
+    // this.ctx.fillText('y', 150, 15);
+    // this.ctx.fillText('x', 340, 195);
     this.ctx.fillText(String(r/2), halfWidth+quarterWidth, halfHeight-10);
     this.ctx.fillText(String(r), 322, halfHeight-10);
     this.ctx.fillText(String(r), 190, 15);
@@ -189,12 +188,15 @@ export class GraphComponent implements AfterViewInit, OnDestroy  {
 
 // Axes
     this.ctx.beginPath();
+    this.ctx.shadowColor = neonPink; // Цвет тени (свечения) осей
+    this.ctx.shadowBlur = 15; // Размер свечения
+
     this.ctx.moveTo(0, halfHeight);
     this.ctx.lineTo(this.canvasRef.nativeElement.width, halfHeight);
     this.ctx.moveTo(halfWidth, 0);
     this.ctx.lineTo(halfWidth, this.canvasRef.nativeElement.height);
 
-    this.ctx.strokeStyle = "black";
+    this.ctx.strokeStyle = neonPink; // Цвет осей
     this.ctx.stroke();
 
     // Стрелочки для осей
@@ -205,9 +207,11 @@ export class GraphComponent implements AfterViewInit, OnDestroy  {
     this.ctx.moveTo(halfWidth - arrowSize, arrowSize);
     this.ctx.lineTo(halfWidth, 0);
     this.ctx.lineTo(halfWidth + arrowSize, arrowSize);
-    this.ctx.fillStyle = "black";
+    this.ctx.fillStyle = neonGreen;
     this.ctx.fillText(String(r/2), 185, 87.5);
     this.ctx.stroke();
+
+
   }
 
   toCanvasCoords(x: number, y: number, r: number, canvasSize: number): { x: number; y: number }{

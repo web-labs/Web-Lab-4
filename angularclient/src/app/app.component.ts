@@ -17,17 +17,15 @@ export class AppComponent implements OnInit {
   constructor(private keycloakService: KeycloakService) {}
 
   ngOnInit() {
-    // Подписываемся на статус аутентификации
     this.authSubscription = this.keycloakService.getIsAuthenticated().subscribe((authenticated: boolean) => {
       this.isAuthenticated = authenticated;
       if (authenticated) {
         console.log('User is authenticated');
       } else {
-        console.log('User is not authenticated');
+        console.log('User is not piska');
       }
     });
 
-    // Подписываемся на имя пользователя
     this.usernameSubscription = this.keycloakService.getUsername().subscribe((username: string | null) => {
       this.username = username;
       if (username) {
@@ -35,7 +33,6 @@ export class AppComponent implements OnInit {
       }
     });
 
-    // Инициализируем Keycloak
     this.keycloakService.init().then(() => {
       console.log("Keycloak Initialized Successfully");
     }).catch((error: any) => {
@@ -44,7 +41,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    // Отписываемся от Observable при уничтожении компонента
     this.authSubscription?.unsubscribe();
     this.usernameSubscription?.unsubscribe();
   }

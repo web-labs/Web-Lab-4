@@ -14,7 +14,7 @@ export class CoordinatesService{
   }
 
   sendCoordinates(credentials: Coordinates): Observable<Point>{
-    return this.http.post<Point>('/api/points/check', credentials)
+    return this.http.post<Point>('http://localhost:8081/api/points/check', credentials)
   }
 
   getAllPoints(username: string | null ): Observable<Point[]>{
@@ -23,7 +23,7 @@ export class CoordinatesService{
       params = params.append('username', username);
     }
 
-    return this.http.get<Point[]>('/api/points', { params });
+    return this.http.get<Point[]>('http://localhost:8081/api/points', { params });
   }
 
   clearPoints(username: string):Observable<void>{
@@ -32,12 +32,12 @@ export class CoordinatesService{
       params = params.append('username', username);
     }
 
-    return this.http.delete<void>('/api/points', { params });
+    return this.http.delete<void>('http://localhost:8081/api/points', { params });
   }
 
   updateRValue(currentRVal: number, username: string | null): Observable<void> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.post<void>('/api/points/r-value', {currentRVal, username}, { headers });
+    return this.http.post<void>('http://localhost:8081/api/points/r-value', {currentRVal, username}, { headers });
   }
 
 

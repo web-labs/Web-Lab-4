@@ -21,24 +21,15 @@ export class KeycloakService {
   init(): Promise<boolean> {
     return new Promise((resolve, reject) => {
 
-      const token = sessionStorage.getItem('authToken');
-      const refreshToken = sessionStorage.getItem('refreshToken');
-
-
       this.keycloakAuth.init({
         onLoad: 'login-required',
         checkLoginIframe: false,
-        // @ts-ignore
-        token: token,
-        // @ts-ignore
-        refreshToken: refreshToken,
       })
         .then((authenticated) => {
           this.isAuthenticated.next(authenticated);
           if (authenticated) {
             console.log('User is authenticated');
             this.keycloakAuth.loadUserProfile().then(profile => {
-              this.saveToken()
               // @ts-ignore
               this.username.next(profile.username);
               resolve(true);
@@ -60,8 +51,6 @@ export class KeycloakService {
       .then(() => {
         this.isAuthenticated.next(false);
         this.username.next(null);
-        sessionStorage.removeItem('authToken')
-        sessionStorage.removeItem('refreshToken')
         console.log("Logout successful");
       });
   }
@@ -73,6 +62,13 @@ export class KeycloakService {
   getUsername(): BehaviorSubject<string | null> {
     return this.username;
   }
+
+
+  getToken(): string {
+    // @ts-ignore
+    return this.keycloakAuth.token;
+  }
+
 
   getUsernameObservable(): Observable<string | undefined> {
     return new Observable<string | undefined>((subscriber) => {
@@ -89,13 +85,4 @@ export class KeycloakService {
     });
   }
 
-  private saveToken() {
-    const token = this.keycloakAuth.token;
-    const refreshToken = this.keycloakAuth.refreshToken;
-
-    // @ts-ignore
-    sessionStorage.setItem('authToken', token);
-    // @ts-ignore
-    sessionStorage.setItem('refreshToken', refreshToken);
-  }
 }

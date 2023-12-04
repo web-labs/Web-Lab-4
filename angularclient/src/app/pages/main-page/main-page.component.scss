@@ -1,0 +1,42 @@
+.logout-button {
+
+  background-image: url('./switch.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+
+  position: absolute;
+
+  padding: 1rem 1rem;
+
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+
+
+
+  @media (min-width: 1500px) {
+
+    top: 1rem;
+    right: 2.5rem;
+  }
+
+  @media (max-width: 1499px) and (min-width: 746px){
+
+    top: 1rem;
+    right: 2.5rem;
+  }
+
+  @media (max-width: 745px) {
+    top: 1rem;
+    right: 0.5rem;
+  }
+
+}
+
+

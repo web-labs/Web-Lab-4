@@ -6,11 +6,12 @@ import { AppComponent } from './app.component';
 import {HeaderComponent} from "./components/header/header.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import { MainPageComponent } from './pages/main-page/main-page.component';
-import {HttpClientModule} from "@angular/common/http";
-import { ToastService, AngularToastifyModule } from 'angular-toastify';
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { CoordinatesFormComponent } from './components/coordinates-form/coordinates-form.component';
 import { GraphComponent } from './components/graph/graph.component';
 import { ResultsTableComponent } from './components/results-table/results-table.component';
+import {AuthInterceptor} from "./services/AuthInterceptor";
+
 
 @NgModule({
   declarations: [
@@ -26,9 +27,10 @@ import { ResultsTableComponent } from './components/results-table/results-table.
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AngularToastifyModule
   ],
-  providers: [ToastService],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
