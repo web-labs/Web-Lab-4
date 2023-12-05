@@ -11,6 +11,7 @@ import { CoordinatesFormComponent } from './components/coordinates-form/coordina
 import { GraphComponent } from './components/graph/graph.component';
 import { ResultsTableComponent } from './components/results-table/results-table.component';
 import {AuthInterceptor} from "./services/AuthInterceptor";
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import {AuthInterceptor} from "./services/AuthInterceptor";
     CoordinatesFormComponent,
     GraphComponent,
     ResultsTableComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
